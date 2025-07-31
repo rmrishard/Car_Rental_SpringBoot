@@ -12,6 +12,8 @@ public interface UserJPARepository extends JpaRepository<User, Long> {
 
        // long deleteByEmail(String email);
 
+
+        //The annotation @Modifying is for update or delete.
         @Modifying
         @Query("delete from User u where u.email = :email")
         void deleteByEmail(@Param("email") String email);
