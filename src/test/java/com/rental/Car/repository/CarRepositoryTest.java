@@ -61,5 +61,21 @@ public class CarRepositoryTest {
         List<Car> cars = repository.findByMake("Teslaz");
         assertEquals(1, cars.size());
     }
+    @Test
+    public void carRepo_FindByModel_ReturnCar(){
+        Car car1 = new Car(
+                "Volt",
+                "Model-Z",
+                2024,
+                95.00,
+                "Sedan");
+
+        repository.save(car1);
+
+
+
+        List<Car> cars = repository.findByModel("Model-Z");
+        assertEquals(1, cars.size());
+    }
 
 }
