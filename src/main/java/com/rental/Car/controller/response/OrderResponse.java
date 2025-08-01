@@ -9,7 +9,7 @@ public class OrderResponse {
     UserResponse user;
     double total;
     String status;
-    List<OrderItemResponse> orderItems;
+    List<CartItemResponse> orderItems;
 
 
 
@@ -17,7 +17,7 @@ public class OrderResponse {
         return new OrderResponse(UserResponse.toResponse(order.getUser()),
                 order.getTotal_amount(),
                 order.getStatus().toString(),
-                order.getOrderItems().stream().map(OrderItemResponse::toResponse).toList());
+                order.getOrderItems().stream().map(CartItemResponse::toResponse).toList());
     }
 
 
@@ -34,14 +34,14 @@ public class OrderResponse {
         return status;
     }
 
-    public List<OrderItemResponse> getOrderItems() {
+    public List<CartItemResponse> getOrderItems() {
         return orderItems;
     }
 
     public OrderResponse() {
     }
 
-    public OrderResponse(UserResponse user, double total, String status, List<OrderItemResponse> orderItems) {
+    public OrderResponse(UserResponse user, double total, String status, List<CartItemResponse> orderItems) {
         this.user = user;
         this.total = total;
         this.status = status;

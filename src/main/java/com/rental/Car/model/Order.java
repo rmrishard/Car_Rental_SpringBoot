@@ -35,7 +35,7 @@ public class Order {
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> OrderItems = new HashSet<>();
+    private Set<CartItem> cartItems = new HashSet<>();
 
 
     public Long getOrder_id() {
@@ -62,8 +62,8 @@ public class Order {
         return created_at;
     }
 
-    public Set<OrderItem> getOrderItems() {
-        return OrderItems;
+    public Set<CartItem> getOrderItems() {
+        return cartItems;
     }
 
     public void setOrder_id(Long order_id) {
@@ -90,19 +90,19 @@ public class Order {
         this.created_at = created_at;
     }
 
-    public void setOrderItems(Set<OrderItem> orderItems) {
-        OrderItems = orderItems;
+    public void setOrderItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public Order(){}
 
-    public Order(Long order_id, User user, double total_amount, OrderStatus status, Date order_date, Timestamp created_at, Set<OrderItem> orderItems) {
+    public Order(Long order_id, User user, double total_amount, OrderStatus status, Date order_date, Timestamp created_at, Set<CartItem> cartItems) {
         this.order_id = order_id;
         this.user = user;
         this.total_amount = total_amount;
         this.status = status;
         this.order_date = order_date;
         this.created_at = created_at;
-        OrderItems = orderItems;
+        this.cartItems = cartItems;
     }
 }

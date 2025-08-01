@@ -6,18 +6,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "order_items")
+@Table(name = "cart_items")
 //@NoArgsConstructor
 //@AllArgsConstructor
 @Getter
 @Setter
 
 
-public class OrderItem {
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long item_id;
+    private Long cart_item_id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "order_id", nullable = false)
@@ -26,7 +26,7 @@ public class OrderItem {
 
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
     private int days;
@@ -35,7 +35,7 @@ public class OrderItem {
 
 
     public Long getItem_id() {
-        return item_id;
+        return cart_item_id;
     }
 
     public Order getOrder() {
@@ -54,8 +54,8 @@ public class OrderItem {
         return daily_rate;
     }
 
-    public OrderItem(Long item_id, Order order, Car car, int days, double daily_rate) {
-        this.item_id = item_id;
+    public CartItem(Long item_id, Order order, Car car, int days, double daily_rate) {
+        this.cart_item_id = item_id;
         this.order = order;
         this.car = car;
         this.days = days;
@@ -63,7 +63,7 @@ public class OrderItem {
 
     }
 
-    public OrderItem() {
+    public CartItem() {
         // JPA requires this
     }
 }
