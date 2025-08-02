@@ -21,25 +21,32 @@ public class CartController {
         this.cartService = cartService;
     }
     @GetMapping("/{userId}")
-    public ResponseEntity<List<CartResponse>> getCart(@PathVariable Long userId) {
-        return ResponseEntity.ok(cartService
-                .findMyCart(userId)
-                .stream().map(CartResponse::toResponse)
-                .toList());
-
+    public ResponseEntity<CartResponse> getCart(@PathVariable Long userId) {
+        return ResponseEntity.ok(CartResponse.toResponse(cartService.findMyCart(userId)));
     }
 
-    @PostMapping("/{userId}/")
+    @PostMapping("/{userId}/items")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createCartItem(@PathVariable Long userId, @RequestBody @Valid CartCreateRequest cartRequest){
-        cartService.createCart(userId, cartRequest.getCarId());
-
+    public void addToCart(@PathVariable Long userId, @RequestBody @Valid CartCreateRequest cartRequest){
+        cartService.addToCart(userId, cartRequest.getCarId(), cartRequest.getDays());
     }
 
-    @PutMapping("/{userId}/cars/{carid}")
+    @PutMapping("/{userId}/items/{carId}")
     @ResponseStatus(HttpStatus.OK)
     public void updateCartItem(@PathVariable Long userId, @PathVariable Long carId, @RequestBody @Valid CartUpdateRequest cartRequest){
-        cartService.updateCart(userId, carId, cartRequest.getDays());
+        cartService.updateCartItem(userId, carId, cartRequest.getDays());
+    }
+
+    @DeleteMapping("/{userId}/items/{carId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeFromCart(@PathVariable Long userId, @PathVariable Long carId){
+        cartService.removeFromCart(userId, carId);
+    }
+
+    @DeleteMapping("/{userId}/clear")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearCart(@PathVariable Long userId){
+        cartService.clearCart(userId);
     }
 
     

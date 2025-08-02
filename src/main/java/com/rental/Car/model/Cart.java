@@ -8,11 +8,13 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name ="cart")
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Getter
 @Setter
 
@@ -27,14 +29,10 @@ public class Cart {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartItem> cartItems = new HashSet<>();
 
-    private Integer days;
-    private BigDecimal daily_rate;
-    private BigDecimal subtotal;
-    private Timestamp added_at;
+    private Timestamp created_at;
 
 
     public Long getCart_id() {
@@ -45,34 +43,39 @@ public class Cart {
         return user;
     }
 
-    public Car getCar() {
-        return car;
+    public Set<CartItem> getCartItems() {
+        return cartItems;
     }
 
-    public Integer getDays() {
-        return days;
+    public void setCartItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
-
-    public BigDecimal getDaily_rate() {
-        return daily_rate;
+    public Timestamp getCreated_at() {
+        return created_at;
     }
 
-    public BigDecimal getSubtotal() {
-        return subtotal;
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
     }
 
-    public Timestamp getAdded_at() {
-        return added_at;
+    public BigDecimal getTotalAmount() {
+        return cartItems.stream()
+                .map(CartItem::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void setDays(Integer days) {
-        this.days = days;
-    }
-
-    public Cart(User user, Car car) {
+    public Cart(User user) {
         this.user = user;
-        this.car = car;
-        this.days = 1;
+        this.created_at = new Timestamp(System.currentTimeMillis());
+    }
+    public Cart() {
+    }
+
+    public Cart(Long cart_id, User user, Set<CartItem> cartItems, Timestamp created_at) {
+        this.cart_id = cart_id;
+        this.user = user;
+        this.cartItems = cartItems;
+        this.created_at = created_at;
     }
 }

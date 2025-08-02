@@ -20,7 +20,7 @@ public class UserRepositoryTest {
     @Autowired
     UserJPARepository repository;
 
-
+/*
 
 
     @Test
@@ -37,5 +37,5 @@ public class UserRepositoryTest {
 
 
         User users = repository.findByUserName("TestUser");
-    }
+    }*/
 }

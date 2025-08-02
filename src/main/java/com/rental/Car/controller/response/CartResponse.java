@@ -1,46 +1,40 @@
 package com.rental.Car.controller.response;
 
-
 import com.rental.Car.model.Cart;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
-//@AllArgsConstructor
 @Setter
 public class CartResponse {
+    private Long cartId;
     private UserResponse user;
-    private CarResponse car;
-    private int days;
+    private List<CartItemResponse> items;
+    private BigDecimal totalAmount;
 
-    public CartResponse(UserResponse user, CarResponse car, int days) {
+    public CartResponse(Long cartId, UserResponse user, List<CartItemResponse> items, BigDecimal totalAmount) {
+        this.cartId = cartId;
         this.user = user;
-        this.car = car;
-        this.days = days;
-    }
-
-    public UserResponse getUser() {
-        return user;
-    }
-
-    public CarResponse getCar() {
-        return car;
-    }
-
-    public int getDays() {
-        return days;
+        this.items = items;
+        this.totalAmount = totalAmount;
     }
 
     public static CartResponse toResponse(Cart cart) {
+        List<CartItemResponse> itemResponses = cart.getCartItems()
+                .stream()
+                .map(CartItemResponse::toResponse)
+                .toList();
+
         return new CartResponse(
+                cart.getCart_id(),
                 UserResponse.toResponse(cart.getUser()),
-                CarResponse.toResponse(cart.getCar()),
-                cart.getDays()
+                itemResponses,
+                cart.getTotalAmount()
         );
-
-
-
     }
 }

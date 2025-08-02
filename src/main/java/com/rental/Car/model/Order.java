@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,7 +27,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private double total_amount;
+    private BigDecimal total_amount;
     @Convert(converter = OrderStatusConverter.class)
     @Column(name = "status")
     private OrderStatus status;
@@ -46,7 +47,7 @@ public class Order {
         return user;
     }
 
-    public double getTotal_amount() {
+    public BigDecimal getTotal_amount() {
         return total_amount;
     }
 
@@ -74,7 +75,7 @@ public class Order {
         this.user = user;
     }
 
-    public void setTotal_amount(double total_amount) {
+    public void setTotal_amount(BigDecimal total_amount) {
         this.total_amount = total_amount;
     }
 
@@ -96,7 +97,7 @@ public class Order {
 
     public Order(){}
 
-    public Order(Long order_id, User user, double total_amount, OrderStatus status, Date order_date, Timestamp created_at, Set<CartItem> cartItems) {
+    public Order(Long order_id, User user, BigDecimal total_amount, OrderStatus status, Date order_date, Timestamp created_at, Set<CartItem> cartItems) {
         this.order_id = order_id;
         this.user = user;
         this.total_amount = total_amount;

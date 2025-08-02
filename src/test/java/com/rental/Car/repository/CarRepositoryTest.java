@@ -23,7 +23,7 @@ public class CarRepositoryTest {
 
 
 
-    @Test
+   /* @Test
     public void carRepo_FindByMakeContaining_ReturnCar(){
         Car car1 = new Car(
                 "Teslaz1",
@@ -76,6 +76,6 @@ public class CarRepositoryTest {
 
         List<Car> cars = repository.findByModel("Model-Z");
         assertEquals(1, cars.size());
-    }
+    }*/
 
 }

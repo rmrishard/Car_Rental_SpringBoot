@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,6 +65,10 @@ public class Car {
 
     public String getType() {
         return type;
+    }
+
+    public BigDecimal getDailyRate() {
+        return price_per_day != null ? BigDecimal.valueOf(price_per_day) : BigDecimal.ZERO;
     }
 
     public Car(String make, String model, Integer year, Double price_per_day, String type) {

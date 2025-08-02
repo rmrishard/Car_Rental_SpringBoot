@@ -1,17 +1,15 @@
 package com.rental.Car.controller.response;
 
-
 import com.rental.Car.model.Order;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class OrderResponse {
     UserResponse user;
-    double total;
+    BigDecimal total;
     String status;
     List<CartItemResponse> orderItems;
-
-
 
     public static OrderResponse toResponse(Order order) {
         return new OrderResponse(UserResponse.toResponse(order.getUser()),
@@ -20,13 +18,11 @@ public class OrderResponse {
                 order.getOrderItems().stream().map(CartItemResponse::toResponse).toList());
     }
 
-
-
     public UserResponse getUser() {
         return user;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
@@ -41,7 +37,7 @@ public class OrderResponse {
     public OrderResponse() {
     }
 
-    public OrderResponse(UserResponse user, double total, String status, List<CartItemResponse> orderItems) {
+    public OrderResponse(UserResponse user, BigDecimal total, String status, List<CartItemResponse> orderItems) {
         this.user = user;
         this.total = total;
         this.status = status;

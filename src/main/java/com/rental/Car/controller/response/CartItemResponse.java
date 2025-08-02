@@ -1,33 +1,38 @@
 package com.rental.Car.controller.response;
 
-
 import com.rental.Car.model.CartItem;
 
-public class CartItemResponse {
-    Long cart_item_id;
-    CarResponse car;
-    int days;
-    double daily_rate;
+import java.math.BigDecimal;
 
+public class CartItemResponse {
+    private Long cartItemId;
+    private CarResponse car;
+    private int days;
+    private BigDecimal dailyRate;
+    private BigDecimal subtotal;
 
     public static CartItemResponse toResponse(CartItem item) {
         return new CartItemResponse(
                 item.getItem_id(),
                 CarResponse.toResponse(item.getCar()),
                 item.getDays(),
-                item.getDaily_rate());
+                item.getDaily_rate(),
+                item.getSubtotal());
     }
 
-
-    public CartItemResponse(Long item_id, CarResponse car, int days, double daily_rate) {
-        this.cart_item_id = item_id;
+    public CartItemResponse(Long cartItemId, CarResponse car, int days, BigDecimal dailyRate, BigDecimal subtotal) {
+        this.cartItemId = cartItemId;
         this.car = car;
         this.days = days;
-        this.daily_rate = daily_rate;
+        this.dailyRate = dailyRate;
+        this.subtotal = subtotal;
     }
 
-    public Long getItem_id() {
-        return cart_item_id;
+    public CartItemResponse() {
+    }
+
+    public Long getCartItemId() {
+        return cartItemId;
     }
 
     public CarResponse getCar() {
@@ -38,12 +43,11 @@ public class CartItemResponse {
         return days;
     }
 
-    public double getDaily_rate() {
-        return daily_rate;
+    public BigDecimal getDailyRate() {
+        return dailyRate;
     }
 
-    public CartItemResponse() {
+    public BigDecimal getSubtotal() {
+        return subtotal;
     }
-
-
 }
