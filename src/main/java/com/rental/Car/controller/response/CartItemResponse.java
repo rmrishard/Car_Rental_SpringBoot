@@ -1,8 +1,13 @@
 package com.rental.Car.controller.response;
 
 import com.rental.Car.model.CartItem;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+
+@Setter
+@Getter
 
 public class CartItemResponse {
     private Long cartItemId;
@@ -50,4 +55,28 @@ public class CartItemResponse {
     public BigDecimal getSubtotal() {
         return subtotal;
     }
+
+
+    public void setCartItemId(Long cartItemId) {
+        this.cartItemId = cartItemId;
+    }
+
+    public void setCar(CarResponse car) {
+        this.car = car;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public void setDailyRate(BigDecimal dailyRate) {
+        this.dailyRate = dailyRate;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+
+
 }

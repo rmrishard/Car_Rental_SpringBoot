@@ -21,7 +21,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_id;
+    private Long user_id;
 
     @JsonProperty("user_name")
     @Column(name = "user_name", nullable = false, unique = true)
@@ -48,7 +48,7 @@ public class User {
         this.password = password;
         this.created_at = new Timestamp(System.currentTimeMillis());}
 
-    public int getId() {
+    public Long getId() {
         return user_id;
     }
 
