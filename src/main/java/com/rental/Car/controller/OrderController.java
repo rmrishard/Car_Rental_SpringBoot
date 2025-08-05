@@ -3,10 +3,7 @@ package com.rental.Car.controller;
 import com.rental.Car.controller.response.OrderResponse;
 import com.rental.Car.services.OrderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,5 +32,8 @@ public class OrderController {
                 .map(OrderResponse::toResponse)
                 .orElse(null));
     }
+
+    @PostMapping
+    public ResponseEntity<Long> placeOrder(@RequestBody.Order)
 
 }

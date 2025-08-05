@@ -8,6 +8,7 @@ import com.rental.Car.repository.CarJpaRepository;
 import com.rental.Car.repository.CartJPARepository;
 import com.rental.Car.repository.CartItemJPARepository;
 import com.rental.Car.repository.UserJPARepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -86,6 +87,8 @@ public class CartService {
         cartItemJPARepository.save(cartItem);
     }
 
+    //Added the Transactional here
+    @Transactional
     public void removeFromCart(Long user_id, Long carId){
         User user = userJPARepository.findById(user_id)
                 .orElseThrow(()-> new RuntimeException("User not found"));
