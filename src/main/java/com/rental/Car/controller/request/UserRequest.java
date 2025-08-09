@@ -71,4 +71,12 @@ public class UserRequest {
         this.password = password;
     }
 
+
+    public void setUserName(@NotBlank @Size(min = 2, max = 100, message = "Title must be between 2 and 100 letters") String userName) {
+        this.userName = userName;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
 }

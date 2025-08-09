@@ -5,6 +5,7 @@ import com.rental.Car.controller.request.CartCreateRequest;
 import com.rental.Car.controller.request.CartUpdateRequest;
 import com.rental.Car.controller.response.CartResponse;
 import com.rental.Car.services.CartService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Cart",description = "Cart management API")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/carts")
 public class CartController {
@@ -20,7 +23,7 @@ public class CartController {
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }
-    @GetMapping("/{userId}")
+    @GetMapping(value = "/{userId}", produces = "application/json")
     public ResponseEntity<CartResponse> getCart(@PathVariable Long userId) {
         return ResponseEntity.ok(CartResponse.toResponse(cartService.findMyCart(userId)));
     }

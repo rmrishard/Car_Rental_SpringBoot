@@ -5,6 +5,7 @@ import com.rental.Car.model.User;
 import com.rental.Car.repository.UserJPARepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,12 +29,12 @@ public class UserService {
     }
 
 
+    @Transactional
     public boolean deleteUserByUserId(Long user_id) {
         if (repository.existsById(user_id)) {
             repository.deleteById(user_id);
             return true;
         }
-        ;
         return false;
     }
 
@@ -50,6 +51,7 @@ public class UserService {
     public void updateUser(Long user_id, @NonNull String user_name, String first_name, String last_name,
                            String email, String password, Timestamp created_at) {
         User user = repository.findById(user_id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+
         user.setUserName(user_name);
         user.setFirst_name(first_name);
         user.setLast_name(last_name);

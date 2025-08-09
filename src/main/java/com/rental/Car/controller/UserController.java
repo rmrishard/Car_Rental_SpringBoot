@@ -5,12 +5,17 @@ import com.rental.Car.controller.request.UpdateGroup;
 import com.rental.Car.controller.request.UserRequest;
 import com.rental.Car.controller.response.UserResponse;
 import com.rental.Car.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+
+@Tag(name = "User",description = "User management API")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class UserController {
     public final UserService service;
@@ -62,7 +67,7 @@ public class UserController {
                 userRequest.getCreated_at());
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/api/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@PathVariable Long userId,
                           @RequestBody

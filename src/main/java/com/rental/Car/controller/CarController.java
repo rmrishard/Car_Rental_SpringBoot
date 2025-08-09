@@ -6,6 +6,7 @@ import com.rental.Car.controller.request.CreateGroup;
 import com.rental.Car.controller.request.UpdateGroup;
 import com.rental.Car.controller.response.CarResponse;
 import com.rental.Car.services.CarService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Car",description = "Car management API")
+@CrossOrigin(origins = "http://localhost:3000")
 @Validated
 @RestController
 @RequestMapping("/api/cars")

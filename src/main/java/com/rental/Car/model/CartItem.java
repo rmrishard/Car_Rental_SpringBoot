@@ -1,6 +1,7 @@
 package com.rental.Car.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +22,12 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cart_item_id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
@@ -94,6 +97,22 @@ public class CartItem {
         this.days = days;
         this.daily_rate = daily_rate;
         this.subtotal = daily_rate.multiply(BigDecimal.valueOf(days));
+    }
+
+    public void setCart_item_id(Long cart_item_id) {
+        this.cart_item_id = cart_item_id;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
     }
 
     public CartItem() {

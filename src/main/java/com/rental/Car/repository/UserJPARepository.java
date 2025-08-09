@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 
 public interface UserJPARepository extends JpaRepository<User, Long> {
         User findByUserName(String user_name);
@@ -22,5 +24,7 @@ public interface UserJPARepository extends JpaRepository<User, Long> {
         @Modifying
         @Query(value = "delete from users u where u.email = :email", nativeQuery = true)
         void deleteByEmailNative(@Param("email") String email);
-    }
+
+    Optional<User> findByEmail(String email);
+}
 

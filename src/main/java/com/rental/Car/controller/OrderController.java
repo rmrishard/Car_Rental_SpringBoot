@@ -2,11 +2,13 @@ package com.rental.Car.controller;
 
 import com.rental.Car.controller.response.OrderResponse;
 import com.rental.Car.services.OrderService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Order",description = "Order management API")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/orders")
 
@@ -33,7 +35,6 @@ public class OrderController {
                 .orElse(null));
     }
 
-    @PostMapping
-    public ResponseEntity<Long> placeOrder(@RequestBody.Order)
+
 
 }

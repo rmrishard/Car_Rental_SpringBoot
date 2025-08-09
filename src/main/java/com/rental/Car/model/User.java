@@ -1,12 +1,15 @@
 package com.rental.Car.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -39,6 +42,14 @@ public class User {
             columnDefinition = "timestamp default CURRENT_TIMESTAMP"
     )
     private Timestamp created_at;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Cart> carts = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Order> orders = new HashSet<>();
 
     public User(@NonNull String user_name, String firstName, String lastName, String email, String password) {
         this.userName = user_name;
