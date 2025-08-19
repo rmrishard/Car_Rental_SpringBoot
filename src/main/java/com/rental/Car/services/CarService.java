@@ -5,6 +5,7 @@ import com.rental.Car.model.Car;
 import com.rental.Car.repository.CarJpaRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,15 @@ public class CarService {
         car.setPrice_per_day(price_per_day);
         car.setType(type);
         repository.save(car);
+    }
+
+    @Transactional
+    public boolean deleteCar(Long carId) {
+        if (repository.existsById(carId)) {
+            repository.deleteById(carId);
+            return true;
+        }
+        return false;
     }
 
 }

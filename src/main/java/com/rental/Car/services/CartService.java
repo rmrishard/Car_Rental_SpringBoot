@@ -103,7 +103,7 @@ public class CartService {
 
         cartItemJPARepository.delete(cartItem);
     }
-
+    @Transactional
     public void clearCart(Long user_id){
         User user = userJPARepository.findById(user_id)
                 .orElseThrow(()-> new RuntimeException("User not found"));
