@@ -67,7 +67,7 @@ public class UserController {
                 userRequest.getCreated_at());
     }
 
-    @PutMapping("/api/{userId}")
+    @PutMapping("/api/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@PathVariable Long userId,
                           @RequestBody

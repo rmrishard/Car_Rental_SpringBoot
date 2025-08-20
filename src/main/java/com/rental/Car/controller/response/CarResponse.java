@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 public class CarResponse {
 
+    private Long id;
     private String make;
     private String model;
     private Integer year;
@@ -18,18 +19,24 @@ public class CarResponse {
 
 
     public static CarResponse toResponse(Car car) {
-        return new CarResponse(car.getMake(),
+        return new CarResponse(car.getId(),
+                car.getMake(),
                 car.getModel(),
                 car.getYear(),
                 car.getPrice_per_day(),
                 car.getType());
     }
-    public CarResponse(String make, String model, Integer year, Double price_per_day, String type) {
+    public CarResponse(Long id, String make, String model, Integer year, Double price_per_day, String type) {
+        this.id = id;
         this.make = make;
         this.model = model;
         this.year = year;
         this.price_per_day = price_per_day;
         this.type = type;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getMake() {
