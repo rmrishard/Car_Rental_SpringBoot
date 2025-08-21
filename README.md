@@ -42,16 +42,6 @@ A comprehensive car rental management system built with Spring Boot, providing R
 - Maven 3.6+
 - PostgreSQL 12+
 
-## Database Setup
-
-1. Install PostgreSQL
-2. Create a database named `WebTrans_Project`
-3. Update database credentials in `src/main/resources/application.properties` if needed:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5434/WebTrans_Project
-   spring.datasource.username=postgres
-   spring.datasource.password=your_password
-   ```
 
 
 ## API Endpoints
