@@ -26,6 +26,8 @@ public class CarRequest {
     @NotNull(groups = CreateGroup.class)
     private String type;
 
+    private String imageUrl;
+
     public @NotBlank @Size(min = 2, max = 100, message = "Title must be between 2 and 100 letters") String getMake() {
         return make;
     }
@@ -44,5 +46,9 @@ public class CarRequest {
 
     public String getType() {
         return type;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

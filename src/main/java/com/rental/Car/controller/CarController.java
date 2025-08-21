@@ -55,7 +55,8 @@ public class CarController {
                 carRequest.getModel(),
                 carRequest.getYear(),
                 carRequest.getPrice_per_day(),
-                carRequest.getType());
+                carRequest.getType(),
+                carRequest.getImageUrl());
     }
 
     @PutMapping("/{carId}")
@@ -68,7 +69,8 @@ public class CarController {
                 carRequest.getModel(),
                 carRequest.getYear(),
                 carRequest.getPrice_per_day(),
-                carRequest.getType());
+                carRequest.getType(),
+                carRequest.getImageUrl());
 
     }
 

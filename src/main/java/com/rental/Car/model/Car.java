@@ -30,6 +30,7 @@ public class Car {
     private Integer year;
     private Double price_per_day;
     private String type;
+    private String imageUrl;
 
 
     @ManyToMany
@@ -67,16 +68,21 @@ public class Car {
         return type;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public BigDecimal getDailyRate() {
         return price_per_day != null ? BigDecimal.valueOf(price_per_day) : BigDecimal.ZERO;
     }
 
-    public Car(String make, String model, Integer year, Double price_per_day, String type) {
+    public Car(String make, String model, Integer year, Double price_per_day, String type, String imageUrl) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.price_per_day = price_per_day;
         this.type = type;
+        this.imageUrl = imageUrl;
     }
     public Car() {
     }
@@ -100,6 +106,10 @@ public class Car {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 

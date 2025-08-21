@@ -35,18 +35,19 @@ public class CarService {
     }
 
     public void createCar(@NonNull String make, String model, Integer year,
-                          Double price_per_day, String type) {
-        repository.save(new Car(make,model,year,price_per_day,type ));
+                          Double price_per_day, String type, String imageUrl) {
+        repository.save(new Car(make,model,year,price_per_day,type,imageUrl ));
     }
 
     public void updateCar (Long carId, @NonNull String make, String model, Integer year,
-                           Double price_per_day, String type) {
+                           Double price_per_day, String type, String imageUrl) {
         Car car = repository.findById(carId).orElseThrow(()->new IllegalArgumentException("Car Not Found"));
         car.setMake(make);
         car.setModel(model);
         car.setYear(year);
         car.setPrice_per_day(price_per_day);
         car.setType(type);
+        car.setImageUrl(imageUrl);
         repository.save(car);
     }
 

@@ -16,6 +16,7 @@ public class CarResponse {
     private Integer year;
     private Double price_per_day;
     private String type;
+    private String imageUrl;
 
 
     public static CarResponse toResponse(Car car) {
@@ -24,15 +25,17 @@ public class CarResponse {
                 car.getModel(),
                 car.getYear(),
                 car.getPrice_per_day(),
-                car.getType());
+                car.getType(),
+                car.getImageUrl());
     }
-    public CarResponse(Long id, String make, String model, Integer year, Double price_per_day, String type) {
+    public CarResponse(Long id, String make, String model, Integer year, Double price_per_day, String type, String imageUrl) {
         this.id = id;
         this.make = make;
         this.model = model;
         this.year = year;
         this.price_per_day = price_per_day;
         this.type = type;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {
@@ -57,5 +60,9 @@ public class CarResponse {
 
     public String getType() {
         return type;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

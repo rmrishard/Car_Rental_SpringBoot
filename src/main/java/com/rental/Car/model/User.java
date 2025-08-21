@@ -33,6 +33,10 @@ public class User {
     private String last_name;
     private String email;
     private String password;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role = Role.USER;
 
     @Column(
             name = "created_at",
@@ -57,6 +61,7 @@ public class User {
         this.last_name = lastName;
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
         this.created_at = new Timestamp(System.currentTimeMillis());}
 
     public Long getId() {
@@ -119,6 +124,7 @@ public class User {
         this.last_name = last_name;
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
         this.created_at = created_at;
     }
 }
