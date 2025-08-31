@@ -4,12 +4,16 @@ import com.rental.Car.controller.request.CreateGroup;
 import com.rental.Car.controller.request.UpdateGroup;
 import com.rental.Car.controller.request.UserRequest;
 import com.rental.Car.controller.response.UserResponse;
+import com.rental.Car.model.Role;
 import com.rental.Car.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.rental.Car.model.UserAuth;
 
 import java.util.List;
 
@@ -57,14 +61,35 @@ public class UserController {
 
     @PostMapping("/api/addUsers")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addUser(@RequestBody @Validated(CreateGroup.class) UserRequest userRequest) {
-        userService.addUser(
-                userRequest.getUser_name(),
-                userRequest.getFirst_name(),
-                userRequest.getLast_name(),
-                userRequest.getEmail(),
-                userRequest.getPassword(),
-                userRequest.getCreated_at());
+    public ResponseEntity<?> addUser(@RequestBody @Validated(CreateGroup.class) UserRequest userRequest, 
+                                   Authentication authentication) {
+        try {
+            Role requestedRole = userRequest.getRole() != null ? userRequest.getRole() : Role.USER;
+            
+            // Check role-based permissions
+            if (requestedRole == Role.ADMIN) {
+                // Only authenticated admins can create admin users
+                if (authentication == null || 
+                    !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Only administrators can create admin users");
+                }
+            }
+            
+            userService.addUser(
+                    userRequest.getUser_name(),
+                    userRequest.getFirst_name(),
+                    userRequest.getLast_name(),
+                    userRequest.getEmail(),
+                    userRequest.getPassword(),
+                    userRequest.getCreated_at(),
+                    requestedRole);
+            
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error creating user: " + e.getMessage());
+        }
     }
 
     @PutMapping("/api/users/{userId}")
@@ -80,6 +105,62 @@ public class UserController {
                 userRequest.getPassword(),
                 userRequest.getCreated_at());
 
+    }
+
+    @GetMapping("/api/users/profile")
+    public ResponseEntity<UserResponse> getUserProfile(Authentication authentication) {
+        try {
+            UserAuth userAuth = (UserAuth) authentication.getPrincipal();
+            Long userId = userAuth.getUserId();
+            
+            return ResponseEntity.ok(
+                service.findUserByUserId(userId)
+                    .map(UserResponse::toResponse)
+                    .orElseThrow(() -> new RuntimeException("User not found"))
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/api/users/profile")
+    public ResponseEntity<?> updateUserProfile(@RequestBody @Validated(UpdateGroup.class) UserRequest userRequest,
+                                             Authentication authentication) {
+        try {
+            UserAuth userAuth = (UserAuth) authentication.getPrincipal();
+            Long userId = userAuth.getUserId();
+            
+            userService.updateUser(userId,
+                userRequest.getUser_name(),
+                userRequest.getFirst_name(),
+                userRequest.getLast_name(),
+                userRequest.getEmail(),
+                userRequest.getPassword(),
+                userRequest.getCreated_at());
+            
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error updating profile: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/api/users/profile")
+    public ResponseEntity<?> deleteUserProfile(Authentication authentication) {
+        try {
+            UserAuth userAuth = (UserAuth) authentication.getPrincipal();
+            Long userId = userAuth.getUserId();
+            
+            boolean deleted = service.deleteUserByUserId(userId);
+            if (deleted) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error deleting account: " + e.getMessage());
+        }
     }
 
 }

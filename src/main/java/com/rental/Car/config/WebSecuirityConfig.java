@@ -42,6 +42,7 @@ public class WebSecuirityConfig {
                         // Public endpoints
                         .requestMatchers(HttpMethod.GET, "/api/cars/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/addUsers").permitAll()  // Allow public user registration
                         .requestMatchers(HttpMethod.POST, "/api/admin/migrate-passwords").permitAll()  // Allow password migration
                         .requestMatchers(HttpMethod.POST, "/api/admin/hash-password").permitAll()     // Allow password hashing
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
@@ -55,6 +56,7 @@ public class WebSecuirityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/orders/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/users/profile").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/users/profile").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/profile").hasAnyRole("USER", "ADMIN")
                         
                         // Admin only endpoints
                         .requestMatchers(HttpMethod.POST, "/api/cars/**").hasRole("ADMIN")

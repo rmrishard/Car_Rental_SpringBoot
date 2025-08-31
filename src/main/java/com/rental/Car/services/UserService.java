@@ -1,9 +1,11 @@
 package com.rental.Car.services;
 
 
+import com.rental.Car.model.Role;
 import com.rental.Car.model.User;
 import com.rental.Car.repository.UserJPARepository;
 import lombok.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +17,11 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserJPARepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserJPARepository repository) {
+    public UserService(UserJPARepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAllUsers() {
@@ -45,6 +49,18 @@ public class UserService {
                         String password,
                         Timestamp created_at)            {
         repository.save(new User(user_name, first_name, last_name, email, password, created_at));
+    }
+    
+    public void addUser(@NonNull String user_name,
+                        String first_name,
+                        String last_name,
+                        String email,
+                        String password,
+                        Timestamp created_at,
+                        Role role) {
+        User user = new User(user_name, first_name, last_name, email, passwordEncoder.encode(password), created_at);
+        user.setRole(role);
+        repository.save(user);
     }
 
 

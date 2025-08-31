@@ -1,6 +1,7 @@
 package com.rental.Car.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rental.Car.model.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -29,6 +30,8 @@ public class UserRequest {
     private String password;
 
     private Timestamp created_at;
+    
+    private Role role;
 
 
 
@@ -78,5 +81,13 @@ public class UserRequest {
 
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
+    }
+    
+    public Role getRole() {
+        return role;
+    }
+    
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
