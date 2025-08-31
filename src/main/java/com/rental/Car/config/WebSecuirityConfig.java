@@ -42,6 +42,8 @@ public class WebSecuirityConfig {
                         // Public endpoints
                         .requestMatchers(HttpMethod.GET, "/api/cars/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/admin/migrate-passwords").permitAll()  // Allow password migration
+                        .requestMatchers(HttpMethod.POST, "/api/admin/hash-password").permitAll()     // Allow password hashing
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         
                         // User endpoints
