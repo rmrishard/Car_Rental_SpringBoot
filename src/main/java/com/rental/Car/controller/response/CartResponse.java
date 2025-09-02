@@ -13,12 +13,14 @@ import java.util.List;
 @Setter
 public class CartResponse {
     private Long cartId;
+    private Long userId;
     private UserResponse user;
     private List<CartItemResponse> items;
     private BigDecimal totalAmount;
 
-    public CartResponse(Long cartId, UserResponse user, List<CartItemResponse> items, BigDecimal totalAmount) {
+    public CartResponse(Long cartId, Long userId, UserResponse user, List<CartItemResponse> items, BigDecimal totalAmount) {
         this.cartId = cartId;
+        this.userId = userId;
         this.user = user;
         this.items = items;
         this.totalAmount = totalAmount;
@@ -32,6 +34,7 @@ public class CartResponse {
 
         return new CartResponse(
                 cart.getCart_id(),
+                cart.getUser().getId(),
                 UserResponse.toResponse(cart.getUser()),
                 itemResponses,
                 cart.getTotalAmount()

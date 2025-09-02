@@ -1,8 +1,11 @@
 package com.rental.Car.services;
 
 
+import com.rental.Car.model.Cart;
 import com.rental.Car.model.Role;
 import com.rental.Car.model.User;
+import com.rental.Car.repository.CartItemJPARepository;
+import com.rental.Car.repository.CartJPARepository;
 import com.rental.Car.repository.UserJPARepository;
 import lombok.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,10 +21,15 @@ import java.util.Optional;
 public class UserService {
     private final UserJPARepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final CartJPARepository cartRepository;
+    private final CartItemJPARepository cartItemRepository;
 
-    public UserService(UserJPARepository repository, PasswordEncoder passwordEncoder) {
+    public UserService(UserJPARepository repository, PasswordEncoder passwordEncoder, 
+                      CartJPARepository cartRepository, CartItemJPARepository cartItemRepository) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     public List<User> findAllUsers() {
@@ -34,12 +42,27 @@ public class UserService {
 
 
     @Transactional
-    public boolean deleteUserByUserId(Long user_id) {
-        if (repository.existsById(user_id)) {
-            repository.deleteById(user_id);
-            return true;
+    public boolean deleteUserByUserId(Long userId) {
+        if (!repository.existsById(userId)) {
+            return false;
         }
-        return false;
+        
+        // Get the user first
+        User user = repository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        
+        // Service-Level Cascading: Manually delete cart items first
+        Optional<Cart> userCart = cartRepository.findByUser(user);
+        if (userCart.isPresent()) {
+            Cart cart = userCart.get();
+            // Delete all cart items first
+            cartItemRepository.deleteByCart(cart);
+            // Then delete the cart
+            cartRepository.delete(cart);
+        }
+        
+        // Finally delete the user
+        repository.deleteById(userId);
+        return true;
     }
 
     public void addUser(@NonNull String user_name,

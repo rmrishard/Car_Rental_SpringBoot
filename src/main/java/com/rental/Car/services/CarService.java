@@ -3,6 +3,7 @@ package com.rental.Car.services;
 
 import com.rental.Car.model.Car;
 import com.rental.Car.repository.CarJpaRepository;
+import com.rental.Car.repository.CartItemJPARepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,11 @@ public class CarService {
 
 
     private final CarJpaRepository repository;
+    private final CartItemJPARepository cartItemRepository;
 
-    public CarService(CarJpaRepository repository) {
+    public CarService(CarJpaRepository repository, CartItemJPARepository cartItemRepository) {
         this.repository = repository;
+        this.cartItemRepository = cartItemRepository;
     }
 //Get all cars
     public List<Car> getCars() {
@@ -54,6 +57,10 @@ public class CarService {
     @Transactional
     public boolean deleteCar(Long carId) {
         if (repository.existsById(carId)) {
+            Car car = repository.findById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
+            
+            // Deletes all cart items that reference this car
+            cartItemRepository.deleteByCar(car);
             repository.deleteById(carId);
             return true;
         }

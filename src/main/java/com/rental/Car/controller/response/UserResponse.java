@@ -18,6 +18,8 @@ public class UserResponse {
     private String email;
     private String password;
     private Timestamp created_at;
+    private Long userId;
+    private String role;
 
 
 
@@ -44,19 +46,23 @@ public class UserResponse {
                 user.getLast_name(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getCreated_at());
+                user.getCreated_at(),
+                user.getUser_id(),
+                user.getRole().toString());
     }
 
 
 
     public UserResponse(String user_name, String first_name, String last_name,
-                        String email, String password, Timestamp created_at) {
+                        String email, String password, Timestamp created_at,Long userId,String role) {
         this.userName = user_name;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.password = password;
         this.created_at = created_at;
+        this.userId = userId;
+        this.role = role;
     }
 
     public String getUser_name() {
@@ -81,5 +87,12 @@ public class UserResponse {
 
     public Timestamp getCreated_at() {
         return created_at;
+    }
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

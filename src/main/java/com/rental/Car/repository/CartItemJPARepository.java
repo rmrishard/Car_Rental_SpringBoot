@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface CartItemJPARepository extends JpaRepository<CartItem, Long> {
     List<CartItem> findByCart(Cart cart);
     Optional<CartItem> findByCartAndCar(Cart cart, Car car);
+    List<CartItem> findByCar(Car car);
     void deleteByCart(Cart cart);
+    void deleteByCar(Car car);
 }

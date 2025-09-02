@@ -4,11 +4,14 @@ package com.rental.Car.controller;
 import com.rental.Car.controller.request.CartCreateRequest;
 import com.rental.Car.controller.request.CartUpdateRequest;
 import com.rental.Car.controller.response.CartResponse;
+import com.rental.Car.model.UserAuth;
 import com.rental.Car.services.CartService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,33 +26,47 @@ public class CartController {
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }
-    @GetMapping(value = "/{userId}", produces = "application/json")
-    public ResponseEntity<CartResponse> getCart(@PathVariable Long userId) {
+
+    private Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuth userAuth = (UserAuth) authentication.getPrincipal();
+        return userAuth.getUserId();
+    }
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<CartResponse> getCart() {
+        Long userId = getCurrentUserId();
         return ResponseEntity.ok(CartResponse.toResponse(cartService.findMyCart(userId)));
     }
 
-    @PostMapping("/{userId}/items")
+    @PostMapping("/items")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addToCart(@PathVariable Long userId, @RequestBody @Valid CartCreateRequest cartRequest){
+    public ResponseEntity<CartResponse> addToCart(@RequestBody @Valid CartCreateRequest cartRequest){
+        Long userId = getCurrentUserId();
         cartService.addToCart(userId, cartRequest.getCarId(), cartRequest.getDays());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(CartResponse.toResponse(cartService.findMyCart(userId)));
     }
 
-    @PutMapping("/{userId}/items/{carId}")
+    @PutMapping("/items/{carId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateCartItem(@PathVariable Long userId, @PathVariable Long carId, @RequestBody @Valid CartUpdateRequest cartRequest){
+    public ResponseEntity<CartResponse> updateCartItem(@PathVariable Long carId, @RequestBody @Valid CartUpdateRequest cartRequest){
+        Long userId = getCurrentUserId();
         cartService.updateCartItem(userId, carId, cartRequest.getDays());
+        return ResponseEntity.ok(CartResponse.toResponse(cartService.findMyCart(userId)));
     }
 
-    @DeleteMapping("/{userId}/items/{carId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeFromCart(@PathVariable Long userId, @PathVariable Long carId){
+    @DeleteMapping("/items/{carId}")
+    public ResponseEntity<CartResponse> removeFromCart(@PathVariable Long carId){
+        Long userId = getCurrentUserId();
         cartService.removeFromCart(userId, carId);
+        return ResponseEntity.ok(CartResponse.toResponse(cartService.findMyCart(userId)));
     }
 
-    @DeleteMapping("/{userId}/clear")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void clearCart(@PathVariable Long userId){
+    @DeleteMapping("/clear")
+    public ResponseEntity<CartResponse> clearCart(){
+        Long userId = getCurrentUserId();
         cartService.clearCart(userId);
+        return ResponseEntity.ok(CartResponse.toResponse(cartService.findMyCart(userId)));
     }
 
     

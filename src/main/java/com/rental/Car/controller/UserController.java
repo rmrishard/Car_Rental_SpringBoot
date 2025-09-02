@@ -50,12 +50,20 @@ public class UserController {
     }
 
     @DeleteMapping("/api/users/{user_id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long user_id){
-        boolean deleted = service.deleteUserByUserId(user_id);
-        if (deleted){
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> deleteUser(@PathVariable Long user_id){
+        try {
+            if (user_id == null) {
+                return ResponseEntity.badRequest().body("User ID cannot be null");
+            }
+            
+            boolean deleted = service.deleteUserByUserId(user_id);
+            if (deleted){
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error deleting user: " + e.getMessage());
         }
     }
 
