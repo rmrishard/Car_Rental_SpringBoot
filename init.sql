@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS cars (
     year INTEGER,
     price_per_day DOUBLE PRECISION,
     type VARCHAR(255),
-    imageUrl VARCHAR(500)
+    image_url VARCHAR(500)
 );
 
 -- Create car_category junction table if not exists
@@ -46,9 +46,9 @@ CREATE TABLE IF NOT EXISTS car_category (
 );
 
 -- Insert admin user with password 'password'
-INSERT INTO users (user_name, first_name, last_name, email, password, role) 
-VALUES ('admin', 'Admin', 'User', 'admin@carrental.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'ADMIN')
-ON CONFLICT (user_name) DO NOTHING;
+INSERT INTO users (user_name, first_name, last_name, email, password, role)
+VALUES ('admin', 'Richard', 'Smith', 'richard@carrental.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'ADMIN')
+    ON CONFLICT (user_name) DO NOTHING;
 
 -- Insert categories
 INSERT INTO category (name) VALUES 
@@ -63,23 +63,25 @@ INSERT INTO category (name) VALUES
 ON CONFLICT DO NOTHING;
 
 -- Insert sample cars
-INSERT INTO cars (make, model, year, price_per_day, type, imageUrl) VALUES
-('Toyota', 'Corolla', 2023, 45.00, 'Sedan', 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500'),
-('Honda', 'Civic', 2023, 48.00, 'Sedan', 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500'),
-('Ford', 'Mustang', 2023, 85.00, 'Sports', 'https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?w=500'),
-('BMW', 'X5', 2023, 120.00, 'SUV', 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500'),
-('Mercedes-Benz', 'C-Class', 2023, 95.00, 'Luxury', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500'),
-('Jeep', 'Wrangler', 2023, 75.00, 'SUV', 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=500'),
-('Nissan', 'Altima', 2023, 52.00, 'Sedan', 'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500'),
-('Chevrolet', 'Camaro', 2023, 78.00, 'Sports', 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=500'),
-('Audi', 'A4', 2023, 88.00, 'Luxury', 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500'),
-('Volkswagen', 'Jetta', 2023, 42.00, 'Compact', 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=500')
+INSERT INTO cars (make, model, year, price_per_day, type, image_url) VALUES
+('Toyota', 'Camry', 2023, 45, 'Sedan', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714635/toyota_camry_wh06pj.jpg'),
+('Honda', 'Civic', 2022, 40, 'Compact', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714634/honda_civic_rlvrhh.jpg'),
+('Ford', 'Mustang', 2023, 75, 'Sports', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714634/ford_mustang_jccp4n.jpg'),
+('BMW', 'X5', 2023, 95, 'SUV', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714634/bmw_x5_fvk5ll.jpg'),
+('Mercedes', 'C-Class', 2022, 85, 'Luxury', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714634/Mercedes_Cclass_xmohlg.jpg'),
+('Nissan', 'Altima', 2023, 42, 'Sedan', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714635/nissan_altima_v8lxzk.jpg'),
+('Hyundai', 'Elantra', 2022, 38, 'Compact', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714634/Hyundai_Elantra_wvmxwk.jpg'),
+('Audi', 'A4', 2023, 80, 'Luxury', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714634/audi_a4_gb7zvz.jpg'),
+('Chevrolet', 'Tahoe', 2023, 90, 'SUV', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714634/Chevrolet_Tahoe_vaihnq.jpg'),
+('Tesla', 'Model 3', 2023, 70, 'Electric', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714635/tesla_model3_k4cdmp.jpg'),
+('Rivian', 'R1S', 2025, 90, 'SUV', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714635/Rivian_R1S_ihyxdm.jpg'),
+('Toyota', 'Land Cruiser', 2025, 115, 'SUV', 'https://res.cloudinary.com/dgnqrrnqk/image/upload/v1755714636/Toyota_Land_Cruiser_h17aks.jpg')
 ON CONFLICT DO NOTHING;
 
 -- Link cars to categories
 INSERT INTO car_category (car_id, category_id) VALUES
--- Toyota Corolla -> Economy, Compact
-(1, 1), (1, 2),
+-- Toyota Camry -> Economy, Mid-size
+(1, 1), (1, 3),
 -- Honda Civic -> Compact
 (2, 2),
 -- Ford Mustang -> Sports
@@ -88,14 +90,18 @@ INSERT INTO car_category (car_id, category_id) VALUES
 (4, 5), (4, 6),
 -- Mercedes C-Class -> Luxury, Full-size
 (5, 5), (5, 4),
--- Jeep Wrangler -> SUV
-(6, 6),
 -- Nissan Altima -> Mid-size
-(7, 3),
--- Chevrolet Camaro -> Sports
-(8, 8),
+(6, 3),
+-- Hyundai Elantra -> Compact, Economy
+(7, 2), (7, 1),
 -- Audi A4 -> Luxury, Mid-size
-(9, 5), (9, 3),
--- Volkswagen Jetta -> Compact, Economy
-(10, 2), (10, 1)
+(8, 5), (8, 3),
+-- Chevrolet Tahoe -> SUV, Full-size
+(9, 6), (9, 4),
+-- Tesla Model 3 -> Luxury, Mid-size
+(10, 5), (10, 3),
+-- Rivian R1S -> SUV, Luxury
+(11, 6), (11, 5),
+-- Toyota Land Cruiser -> SUV, Full-size
+(12, 6), (12, 4)
 ON CONFLICT DO NOTHING;
