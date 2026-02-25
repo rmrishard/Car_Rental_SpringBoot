@@ -42,6 +42,7 @@ public class UserRequest {
         return userName;
     }
     public void getUser_name(String user_name) {
+
         this.userName = user_name;
     }
     public String getFirst_name() {
@@ -88,6 +89,7 @@ public class UserRequest {
     }
     
     public void setRole(Role role) {
+
         this.role = role;
     }
 }
